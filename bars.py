@@ -24,11 +24,18 @@ def get_smallest_bar(data):
     )
 
 
-def get_closest_bar(data, longitude, latitude):
+def get_closest_bar(data, long, lat):
+    # The geo coordinates in the json data seem to be mixed up.
+    # For example:
+    # the first bar coordinates are [37.621587946152012, 55.765366956608361],
+    # but Yandex says it should be [55.765366956608361, 37.621587946152012].
+
+    geo = 'geometry'
+    coords = 'coordinates'
     return min(
         data['features'],
         key=lambda item: math.sqrt(
-            (item['geometry']['coordinates'][1] - longitude)**2 + (item['geometry']['coordinates'][0] - latitude)**2
+            (item[geo][coords][1] - long)**2 + (item[geo][coords][0] - lat)**2
         )
     )
 
