@@ -16,6 +16,8 @@ def get_biggest_bar(data):
 
 def get_smallest_bar(data):
     return min(
+        # I think SeatsCount == 0 means "no data"
+        # so I ignore such bars
         [
             item for item in data['features']
             if int(item['properties']['Attributes']['SeatsCount']) > 0
@@ -41,9 +43,51 @@ def get_closest_bar(data, long, lat):
 
 
 if __name__ == '__main__':
+
+    def print_bar(bar, bar_type):
+        bar = bar['properties']['Attributes']
+        print(bar_template.format(
+            type=bar_type.lower(),
+            name=bar['Name'],
+            phone=bar['PublicPhone'][0]['PublicPhone'],
+            address=bar['Address'],
+            seats=bar['SeatsCount'],
+        ))
+
+
+    bar_template = '''
+Самый {type} бар:
+{name}
+Телефон: {phone}
+Адрес: {address}
+Число мест: {seats}'''
+
+    message = '''
+Введите ваши координаты и мы покажем ближайший бар!
+Координаты удобно скопировать в картах Гугла или Яндекса.
+Например: 55.752631, 37.621418
+'''
+
     path = "bars.json"
     data = load_data(path)
-    biggest = get_biggest_bar(data)['properties']['Attributes']
-    smallest = get_smallest_bar(data)['properties']['Attributes']
-    closest = get_closest_bar(data, 55.667587, 37.556106)
-    print(closest)
+
+    print(message, end='')
+
+    while True:
+        user_input = input().strip()
+        try:
+            user_long, user_lat = user_input.split(', ')
+            user_long = float(user_long)
+            user_lat = float(user_lat)
+            break
+        except ValueError:
+            print('Координаты должны быть в формате: XX.XXX, YY.YYY')
+
+    closest = get_closest_bar(data, user_long, user_lat)
+    biggest = get_biggest_bar(data)
+    smallest = get_smallest_bar(data)
+
+    print_bar(closest, 'близкий')
+    print_bar(biggest, 'большой')
+    print_bar(smallest, 'маленький')
+
