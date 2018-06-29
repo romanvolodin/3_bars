@@ -7,26 +7,26 @@ def load_data(filepath):
         return json.load(json_file)
 
 
-def get_biggest_bar(data):
+def get_biggest_bar(json_data):
     return max(
-        data['features'],
-        key=lambda item: item['properties']['Attributes']['SeatsCount']
+        json_data['features'],
+        key=lambda bar: bar['properties']['Attributes']['SeatsCount']
     )
 
 
-def get_smallest_bar(data):
+def get_smallest_bar(json_data):
     return min(
         # I think SeatsCount == 0 means "no data"
         # so I ignore such bars
         [
-            item for item in data['features']
-            if int(item['properties']['Attributes']['SeatsCount']) > 0
+            bar for bar in json_data['features']
+            if int(bar['properties']['Attributes']['SeatsCount']) > 0
         ],
-        key=lambda item: item['properties']['Attributes']['SeatsCount']
+        key=lambda bar: bar['properties']['Attributes']['SeatsCount']
     )
 
 
-def get_closest_bar(data, long, lat):
+def get_closest_bar(json_data, long, lat):
     # The geo coordinates in the json data seem to be mixed up.
     # For example:
     # the first bar coordinates are [37.621587946152012, 55.765366956608361],
@@ -35,9 +35,9 @@ def get_closest_bar(data, long, lat):
     geo = 'geometry'
     coords = 'coordinates'
     return min(
-        data['features'],
-        key=lambda item: math.sqrt(
-            (item[geo][coords][1] - long)**2 + (item[geo][coords][0] - lat)**2
+        json_data['features'],
+        key=lambda bar: math.sqrt(
+            (bar[geo][coords][1] - long)**2 + (bar[geo][coords][0] - lat)**2
         )
     )
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 '''
 
     path = "bars.json"
-    data = load_data(path)
+    json_data = load_data(path)
 
     print(message, end='')
 
@@ -83,9 +83,9 @@ if __name__ == '__main__':
         except ValueError:
             print('Координаты должны быть в формате: XX.XXX, YY.YYY')
 
-    closest = get_closest_bar(data, user_long, user_lat)
-    biggest = get_biggest_bar(data)
-    smallest = get_smallest_bar(data)
+    closest = get_closest_bar(json_data, user_long, user_lat)
+    biggest = get_biggest_bar(json_data)
+    smallest = get_smallest_bar(json_data)
 
     print_bar(closest, 'близкий')
     print_bar(biggest, 'большой')
