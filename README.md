@@ -17,7 +17,7 @@
 
 ```bash
 
-$ python bars.py # possibly requires call of python3 executive instead of just python
+$ python bars.py /path/to/bars_data.json # possibly requires call of python3 executive instead of just python
 
 Введите ваши координаты и мы покажем ближайший бар!
 Координаты удобно скопировать в картах Гугла или Яндекса.
