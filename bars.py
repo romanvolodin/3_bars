@@ -1,3 +1,4 @@
+import argparse
 import json
 import math
 
@@ -43,6 +44,13 @@ def get_closest_bar(json_data, long, lat):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_data',
+                        help='path to bars data in json format')
+    args = parser.parse_args()
+
+    path = args.input_data
+    json_data = load_data(path)
 
     def print_bar(bar, bar_type):
         bar = bar['properties']['Attributes']
@@ -68,8 +76,6 @@ if __name__ == '__main__':
 Например: 55.752631, 37.621418
 '''
 
-    path = "bars.json"
-    json_data = load_data(path)
 
     print(message, end='')
 
