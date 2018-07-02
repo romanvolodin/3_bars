@@ -36,6 +36,25 @@ def get_closest_bar(json_data, user_long, user_lat):
     )
 
 
+def print_bar(bar, bar_type):
+    bar = bar['properties']['Attributes']
+
+    bar_template = '''
+    Самый {type} бар:
+    {name}
+    Телефон: {phone}
+    Адрес: {address}
+    Число мест: {seats}'''
+
+    print(bar_template.format(
+        type=bar_type.lower(),
+        name=bar['Name'],
+        phone=bar['PublicPhone'][0]['PublicPhone'],
+        address=bar['Address'],
+        seats=bar['SeatsCount'],
+    ))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('input_data',
@@ -45,33 +64,12 @@ if __name__ == '__main__':
     path = args.input_data
     json_data = load_data(path)['features']
 
-    def print_bar(bar, bar_type):
-        bar = bar['properties']['Attributes']
-        print(bar_template.format(
-            type=bar_type.lower(),
-            name=bar['Name'],
-            phone=bar['PublicPhone'][0]['PublicPhone'],
-            address=bar['Address'],
-            seats=bar['SeatsCount'],
-        ))
-
-
-    bar_template = '''
-Самый {type} бар:
-{name}
-Телефон: {phone}
-Адрес: {address}
-Число мест: {seats}'''
-
-    message = '''
-Введите ваши координаты и мы покажем ближайший бар!
-Координаты удобно скопировать в картах Гугла или Яндекса.
-Например: 55.752631, 37.621418
-'''
-
-    print(message, end='')
+    print('Введите ваши координаты и мы покажем ближайший бар!\n'
+          'Координаты удобно скопировать в картах Гугла или Яндекса.\n'
+          'Например: 55.752631, 37.621418')
 
     user_input = input().strip()
+    
     try:
         user_long, user_lat = user_input.split(', ')
         user_long = float(user_long)
