@@ -10,7 +10,7 @@ def load_data(filepath):
 
 def get_biggest_bar(json_data):
     return max(
-        json_data['features'],
+        json_data,
         key=lambda bar: bar['properties']['Attributes']['SeatsCount']
     )
 
@@ -20,7 +20,7 @@ def get_smallest_bar(json_data):
         # I think SeatsCount == 0 means "no data"
         # so I ignore such bars
         [
-            bar for bar in json_data['features']
+            bar for bar in json_data
             if int(bar['properties']['Attributes']['SeatsCount']) > 0
         ],
         key=lambda bar: bar['properties']['Attributes']['SeatsCount']
@@ -36,7 +36,7 @@ def get_closest_bar(json_data, long, lat):
     geo = 'geometry'
     coords = 'coordinates'
     return min(
-        json_data['features'],
+        json_data,
         key=lambda bar: math.sqrt(
             (bar[geo][coords][1] - long)**2 + (bar[geo][coords][0] - lat)**2
         )
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     path = args.input_data
-    json_data = load_data(path)
+    json_data = load_data(path)['features']
 
     def print_bar(bar, bar_type):
         bar = bar['properties']['Attributes']
@@ -75,7 +75,6 @@ if __name__ == '__main__':
 Координаты удобно скопировать в картах Гугла или Яндекса.
 Например: 55.752631, 37.621418
 '''
-
 
     print(message, end='')
 
