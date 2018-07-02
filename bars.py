@@ -17,12 +17,7 @@ def get_biggest_bar(json_data):
 
 def get_smallest_bar(json_data):
     return min(
-        # I think SeatsCount == 0 means "no data"
-        # so I ignore such bars
-        [
-            bar for bar in json_data
-            if int(bar['properties']['Attributes']['SeatsCount']) > 0
-        ],
+        json_data,
         key=lambda bar: bar['properties']['Attributes']['SeatsCount']
     )
 
