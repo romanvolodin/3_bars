@@ -78,15 +78,14 @@ if __name__ == '__main__':
 
     print(message, end='')
 
-    while True:
-        user_input = input().strip()
-        try:
-            user_long, user_lat = user_input.split(', ')
-            user_long = float(user_long)
-            user_lat = float(user_lat)
-            break
-        except ValueError:
-            print('Координаты должны быть в формате: XX.XXX, YY.YYY')
+    user_input = input().strip()
+    try:
+        user_long, user_lat = user_input.split(', ')
+        user_long = float(user_long)
+        user_lat = float(user_lat)
+    except ValueError:
+        print('Ошибка: Координаты должны быть в формате: XX.XXX, YY.YYY')
+        exit()
 
     closest_bar = get_closest_bar(json_data, user_long, user_lat)
     biggest_bar = get_biggest_bar(json_data)
