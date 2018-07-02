@@ -88,11 +88,11 @@ if __name__ == '__main__':
         except ValueError:
             print('Координаты должны быть в формате: XX.XXX, YY.YYY')
 
-    closest = get_closest_bar(json_data, user_long, user_lat)
-    biggest = get_biggest_bar(json_data)
-    smallest = get_smallest_bar(json_data)
+    closest_bar = get_closest_bar(json_data, user_long, user_lat)
+    biggest_bar = get_biggest_bar(json_data)
+    smallest_bar = get_smallest_bar(json_data)
 
-    print_bar(closest, 'близкий')
-    print_bar(biggest, 'большой')
-    print_bar(smallest, 'маленький')
+    print_bar(closest_bar, 'близкий')
+    print_bar(biggest_bar, 'большой')
+    print_bar(smallest_bar, 'маленький')
 
