@@ -37,13 +37,6 @@ def get_smallest_bar(json_data):
 
 
 def get_closest_bar(json_data, user_long, user_lat):
-
-    def get_distance(bar, user_long, user_lat):
-        bar_lat, bar_long = bar['geometry']['coordinates']
-        return math.sqrt(
-            (bar_long - user_long) ** 2 + (bar_lat - user_lat) ** 2
-        )
-
     return min(
         json_data,
         key=lambda bar: get_distance(bar, user_long, user_lat)
@@ -67,6 +60,13 @@ def print_bar(bar, bar_type):
         address=bar['Address'],
         seats=bar['SeatsCount'],
     ))
+
+
+def get_distance(bar, user_long, user_lat):
+    bar_lat, bar_long = bar['geometry']['coordinates']
+    return math.sqrt(
+        (bar_long - user_long) ** 2 + (bar_lat - user_lat) ** 2
+    )
 
 
 if __name__ == '__main__':
