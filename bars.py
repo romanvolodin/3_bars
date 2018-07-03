@@ -14,12 +14,10 @@ def load_data(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as json_file:
             return json.load(json_file)
-    except FileNotFoundError:
-        exit("Ошибка: Файл {} не найден.".format(filepath))
-    except PermissionError:
-        exit("Ошибка: Нехватает прав для чтения файла {}.".format(filepath))
-    except json.decoder.JSONDecodeError:
-        exit("Ошибка: Файл {} не содержит json данные.".format(filepath))
+    except (FileNotFoundError,
+            PermissionError,
+            json.decoder.JSONDecodeError):
+        return
 
 
 def get_biggest_bar(json_data):
@@ -72,7 +70,12 @@ def get_distance(bar, user_long, user_lat):
 if __name__ == '__main__':
     args = parse_arguments()
     path = args.input_data
-    json_data = load_data(path)['features']
+    json_data = load_data(path)
+    if json_data is None:
+        exit('Ошибка: Невозможно прочитать файл {}. Убедитесь, что файл '
+             'существует и содержит json данные'.format(path))
+    else:
+        json_data = json_data['features']
 
     print('Введите ваши координаты и мы покажем ближайший бар!\n'
           'Координаты удобно скопировать в картах Гугла или Яндекса.\n'
