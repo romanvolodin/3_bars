@@ -3,6 +3,13 @@ import json
 import math
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_data',
+                        help='path to bars data in json format')
+    return parser.parse_args()
+
+
 def load_data(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as json_file:
@@ -13,8 +20,6 @@ def load_data(filepath):
         exit("Нехватает прав для чтения файла {}.".format(filepath))
     except json.decoder.JSONDecodeError:
         exit("Файл {} не содержит json данные.".format(filepath))
-
-
 
 
 def get_biggest_bar(json_data):
@@ -65,11 +70,7 @@ def print_bar(bar, bar_type):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('input_data',
-                        help='path to bars data in json format')
-    args = parser.parse_args()
-
+    args = parse_arguments()
     path = args.input_data
     json_data = load_data(path)['features']
 
