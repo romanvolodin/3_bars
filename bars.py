@@ -4,8 +4,17 @@ import math
 
 
 def load_data(filepath):
-    with open(filepath, 'r', encoding='utf-8') as json_file:
-        return json.load(json_file)
+    try:
+        with open(filepath, 'r', encoding='utf-8') as json_file:
+            return json.load(json_file)
+    except FileNotFoundError:
+        exit("Файл {} не найден.".format(filepath))
+    except PermissionError:
+        exit("Нехватает прав для чтения файла {}.".format(filepath))
+    except json.decoder.JSONDecodeError:
+        exit("Файл {} не содержит json данные.".format(filepath))
+
+
 
 
 def get_biggest_bar(json_data):
