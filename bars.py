@@ -65,6 +65,22 @@ def get_distance(bar, user_long, user_lat):
     )
 
 
+def get_user_coordinates():
+    print('Введите ваши координаты и мы покажем ближайший бар!\n'
+          'Координаты удобно скопировать в картах Гугла или Яндекса.\n'
+          'Например: 55.752631, 37.621418')
+
+    user_input = input().strip()
+
+    try:
+        user_long, user_lat = user_input.split(', ')
+        user_long = float(user_long)
+        user_lat = float(user_lat)
+        return user_long, user_lat
+    except ValueError:
+        return
+
+
 if __name__ == '__main__':
     args = parse_arguments()
     path = args.input_data
@@ -77,21 +93,12 @@ if __name__ == '__main__':
     if bars_data is None:
         exit('Ошибка: Невозможно прочитать файл {}. Убедитесь, что файл '
              'содержит json данные.'.format(path))
-
     bars = bars_data['features']
 
-    print('Введите ваши координаты и мы покажем ближайший бар!\n'
-          'Координаты удобно скопировать в картах Гугла или Яндекса.\n'
-          'Например: 55.752631, 37.621418')
-
-    user_input = input().strip()
-    
-    try:
-        user_long, user_lat = user_input.split(', ')
-        user_long = float(user_long)
-        user_lat = float(user_lat)
-    except ValueError:
+    user_coordinates = get_user_coordinates()
+    if user_coordinates is None:
         exit('Ошибка: Координаты должны быть в формате: XX.XXX, YY.YYY')
+    user_long, user_lat = user_coordinates
 
     closest_bar = get_closest_bar(bars, user_long, user_lat)
     biggest_bar = get_biggest_bar(bars)
