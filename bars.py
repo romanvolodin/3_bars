@@ -75,7 +75,7 @@ if __name__ == '__main__':
         exit('Ошибка: Невозможно прочитать файл {}. Убедитесь, что файл '
              'существует и содержит json данные'.format(path))
     else:
-        bars_data = bars_data['features']
+        bars = bars_data['features']
 
     print('Введите ваши координаты и мы покажем ближайший бар!\n'
           'Координаты удобно скопировать в картах Гугла или Яндекса.\n'
@@ -90,9 +90,9 @@ if __name__ == '__main__':
     except ValueError:
         exit('Ошибка: Координаты должны быть в формате: XX.XXX, YY.YYY')
 
-    closest_bar = get_closest_bar(bars_data, user_long, user_lat)
-    biggest_bar = get_biggest_bar(bars_data)
-    smallest_bar = get_smallest_bar(bars_data)
+    closest_bar = get_closest_bar(bars, user_long, user_lat)
+    biggest_bar = get_biggest_bar(bars)
+    smallest_bar = get_smallest_bar(bars)
 
     print_bar(closest_bar, 'близкий')
     print_bar(biggest_bar, 'большой')
