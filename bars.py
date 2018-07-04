@@ -14,9 +14,7 @@ def load_data(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as json_file:
             return json.load(json_file)
-    except (FileNotFoundError,
-            PermissionError,
-            json.decoder.JSONDecodeError):
+    except json.decoder.JSONDecodeError:
         return
 
 
@@ -70,12 +68,17 @@ def get_distance(bar, user_long, user_lat):
 if __name__ == '__main__':
     args = parse_arguments()
     path = args.input_data
-    bars_data = load_data(path)
+
+    try:
+        bars_data = load_data(path)
+    except (FileNotFoundError, PermissionError) as err:
+        exit(err)
+
     if bars_data is None:
         exit('Ошибка: Невозможно прочитать файл {}. Убедитесь, что файл '
-             'существует и содержит json данные'.format(path))
-    else:
-        bars = bars_data['features']
+             'содержит json данные.'.format(path))
+
+    bars = bars_data['features']
 
     print('Введите ваши координаты и мы покажем ближайший бар!\n'
           'Координаты удобно скопировать в картах Гугла или Яндекса.\n'
